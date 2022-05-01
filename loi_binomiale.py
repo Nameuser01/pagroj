@@ -3,9 +3,10 @@
 from collections import Counter
 from random import randint as rd
 import matplotlib.pyplot as plt
+import numpy as np
 
 # User variables
-random_range = 10
+random_range = 1000000
 min_range = 50
 max_range = 120
 
@@ -22,18 +23,24 @@ def compteur(echantillon):
 	db_compte = Counter()
 	for element in echantillon:
 		db_compte[element] += 1
-	# Sorting the db_compte database before returning
-	print(db_compte)
 	db_sorted = sorted(db_compte.items())
 	return db_sorted
 
-def trace_graphique():
-	# On trace le graphique en espérant avoir une loi binomiale qui se dessine plus ou moins
-	pass
+def trace_graphique(elements_compte, random_range):
+	x = []
+	y = []
+	x, y = zip(*elements_compte)  # untupling
+
+	plt.grid(True)
+	plt.xlabel("Valeur de x")
+	plt.ylabel("Occurence pour x")
+	plt.plot(x, y)
+	plt.title(f"Visualisation de la répartition des valeurs lors d'un\ntirage pseudo-aléatoire avec la librairie \"random\"\npour {random_range} d'évènements.")
+	plt.show()
 
 # Control
 echantillon_brut = []
 echantillon_brut = random_generation(min_range, max_range, random_range)
 elements_compte = []
 elements_compte = compteur(echantillon_brut)
-print(elements_compte)
+trace_graphique(elements_compte, random_range)
