@@ -5,10 +5,11 @@ using namespace std;
 
 void menu();
 void pressEnter();
+void sh_do_rep_exists();
 int main()
 {
 	// Déclaration des variables
-	string navigation("*"), foo("foo");
+	string navigation("*");
 
 	while(navigation != "0"
 		|| navigation != "1"
@@ -37,17 +38,22 @@ int main()
 		{
 			system("ls -Rl .");
 		}
+		// visualisation du répertoire de sortie de OUTIL
 		else if (navigation == "2")
 		{
-			continue;
+			sh_do_rep_exists();
+			system("ls -l db/");
 		}
+		// visualisation des fichiers de sortie bruts de OUTIL
 		else if (navigation == "3")
 		{
-			continue;
+			sh_do_rep_exists();
+			system("ls -l db/OUTIL_????????_??????.txt");
 		}
 		else if (navigation == "4")
 		{
-			continue;
+			sh_do_rep_exists();
+			system("ls -l db/OUTIL_????????_??????_treated.txt");
 		}
 		else if (navigation == "a")
 		{
@@ -85,7 +91,7 @@ void menu()
 	cout << "2 - visualisation du répertoire de sortie de OUTIL" << endl;
 	cout << "3 - visualisation des fichiers de sortie bruts de OUTIL" << endl;
 	cout << "4 - visualisation des fichiers de sortis triés de OUTIL" << endl;
-	cout << "a + réorgaisation du répertoire OUTIL" << endl;
+	cout << "a + réorganisation du répertoire OUTIL" << endl;
 	cout << "b + analyse statistique d'un fichier (GUI)" << endl;
 	cout << "c + analyse statistique d'un fichier (SHELL)" << endl;
 	cout << "d + exploration des résultats" << endl;
@@ -94,7 +100,20 @@ void menu()
 
 void pressEnter()
 {
-	// Un fois 2 est nécessaire pour que cela soit effectif
 	cin.get();
 	cin.get();
+}
+
+void sh_do_rep_exists()
+{
+	system("echo '#!/bin/bash' > .check_rep.sh");
+	system("echo 'if [[ -d \"db\" ]]' >> .check_rep.sh");
+	system("echo 'then' >> .check_rep.sh");
+	system("echo \"echo 'File exists on your computer'\" >> .check_rep.sh");
+	system("echo 'else' >> .check_rep.sh");
+	system("echo 'mkdir db' >> .check_rep.sh");
+	system("echo \"echo 'Le fichier n\'existait pas, il vient d\'être créé !'\" >> .check_rep.sh");
+	system("echo 'fi' >> .check_rep.sh");
+	system("chmod +x .check_rep.sh");
+	system("./.check_rep.sh");
 }
