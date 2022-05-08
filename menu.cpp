@@ -1,17 +1,15 @@
 #include <iostream>
 #include <string>
-// Programme prévu pour les systèmes linux exclusivement
+// programme prévu pour les systèmes linux
 
 using namespace std;
 
 void menu();
 void pressEnter();
-void sh_do_rep_exists();
-void sh_rep_cleaning();
 void menu_installation();
 int main()
 {
-	// Déclaration des variables
+	// déclaration des variables
 	string navigation("*");
 
 	system("clear");
@@ -26,19 +24,19 @@ int main()
 		|| navigation != "c"
 		|| navigation != "d")
 	{
-		// Sélection utilisateur
+		// choix utilisateur
 		menu();
 		cout << "Quel est votre choix ?\n> " ;
 		cin >> navigation ;
 		cout << "\n" << endl;
 
-		// Fermer l'outil de gestion de OUTIL
+		// fermer l'outil de gestion de OUTIL
 		if (navigation == "0")
 		{
 			cout << "Fin d'exécution du programme !" << endl;
 			return 0;
 		}
-		// Installation des fichiers et scripts nécessaires pour ce programme
+		// installation des fichiers et scripts nécessaires pour ce programme
 		else if (navigation == "1") 
 		{
 			system("clear");
@@ -52,7 +50,7 @@ int main()
 				cin >> bit_installation ;
 				cout << "\n" << endl;
 
-				// fermer l'outil de gestion de OUTIL
+				// quitter l'outil de gestion de OUTIL
 				if (bit_installation == "0")
 				{
 					cout << "Fin d'exécution du programme !" << endl;
@@ -79,7 +77,7 @@ int main()
 						cout << "Entrée incorrecte, dos2unix n'a pas été installé !" << endl;
 					}
 				}
-				//téléchargement du script rep_check.sh" << endl;
+				// téléchargement du script rep_check.sh" << endl;
 				else if (bit_installation == "b")
 				{
 					string user_rep("*");
@@ -88,6 +86,8 @@ int main()
 					if (user_rep == "Y" || user_rep == "y" || user_rep == "O" || user_rep == "o")
 					{
 						system("curl https://raw.githubusercontent.com/Nameuser01/pagroj/master/rep_check.sh > .rep_check.sh");
+						system("dos2unix .rep_check.sh");
+						system("chmod +x .rep_check.sh");
 					}
 					else
 					{
@@ -95,7 +95,7 @@ int main()
 					}
 
 				}
-				//téléchargement du script loi_binomiale.py
+				// téléchargement du script loi_binomiale.py
 				else if (bit_installation == "c")
 				{
 					string user_rep("*");
@@ -104,6 +104,8 @@ int main()
 					if (user_rep == "Y" || user_rep == "y" || user_rep == "O" || user_rep == "o")
 					{
 						system("curl https://raw.githubusercontent.com/Nameuser01/pagroj/master/loi_binomiale.py > .loi_binomiale.py");
+						system("dos2unix .loi_binomiale.py");
+						system("chmod +x .loi_binomiale.py");
 					}
 					else
 					{
@@ -116,51 +118,68 @@ int main()
 					cout << "Entrée incorrecte, réessayez !" << endl;
 				}
 				cout << "\n" << endl;
+				// !! filtrage du press enter !!
 				pressEnter();
 			}
 		}
 		// visualisation des répertoires de OUTIL
-		else if (navigation == "2") 
+		else if (navigation == "2")
 		{
 			system("ls -Rl .");
 		}
 		// visualisation du répertoire de sortie de OUTIL
 		else if (navigation == "3")
 		{
-			sh_do_rep_exists();
+			system("./.rep_check.sh");
 			system("ls -l db/");
 		}
 		// visualisation des fichiers de sortie bruts de OUTIL
 		else if (navigation == "4")
 		{
-			sh_do_rep_exists();
+			system("./.rep_check.sh");
 			system("ls -l db/OUTIL_results_????????_??????.txt");
 		}
 		// visualisation des fichiers de sortis triés de OUTIL
 		else if (navigation == "5")
 		{
-			sh_do_rep_exists();
+			system("./.rep_check.sh");
 			system("ls -l db/OUTIL_treated_????????_??????.txt");
 		}
 		// visualisation de la répartition du random en python
 		else if (navigation == "6")
 		{
-			continue;
+			int arg_min(0), arg_max(0), arg_tirages(0);
+			// choix des arguments pour .loi_binomiale.py
+			while(arg_max <= arg_min || arg_min <= 0 || arg_tirages <= 0)
+			{
+				// choix utilisateur
+				cout << "Quelle est la borne min pour la fenêtre de random à tester ?\n> " ;
+				cin >> arg_min ;
+				cout << "\nQuelle est la borne max pour la fenêtre de random à tester ?\n> " ;
+				cin >> arg_max ;
+				cout << "\nCombien de tirages sont a effectuer ?\n> " ;
+				cin >> arg_tirages ;
+			}
+			string commande("./.loi_binomiale.py " + to_string(arg_min) + " " + to_string(arg_max) + " " + to_string(arg_tirages));
+			system((commande).c_str());
 		}
 		// réorganisation du répertoire OUTIL
 		else if (navigation == "a")
 		{
-			sh_do_rep_exists();
-			// system(("cat "+foo).c_str());
+			system("./.rep_check.sh");
+			system("mv -iv OUTIL_???????_????????_??????.txt db/");
 		}
+		// analyse statistique d'un fichier (GUI)
 		else if (navigation == "b")
 		{
 			continue;
 		}
+		// analyse statistique d'un fichier (SHELL)
 		else if (navigation == "c")
 		{
 			continue;
 		}
+		// exploration des résultats
 		else if (navigation == "d")
 		{
 			continue;
@@ -168,14 +187,15 @@ int main()
 		else
 		{
 			cout << "Entrée incorrecte, réessayez !" << endl;
-		} 
+		}
+		// !! filtrage du press enter !!
 		pressEnter();
 	}
 	cout << "Fin d'exécution du programme !" << endl;
 	return 0;
 }
 
-// Afficher le menu de sélection pour l'utilisateur
+// afficher le menu de sélection pour l'utilisateur
 void menu()
 {
 	cout << "########## Menu de sélection ##########\n" << endl;
@@ -193,7 +213,7 @@ void menu()
 	cout << "\n" << endl;
 }
 
-// Pause avant de poursuivre l'exécution
+// pause avant de poursuivre l'exécution
 void pressEnter()
 {
 	cout << "\nAppuyez sur entrée pour continuer..." << endl;
@@ -202,22 +222,7 @@ void pressEnter()
 	system("clear");
 }
 
-// Récupérer et exécuter un script de vérification de l'existence d'un fichier, sur github
-void sh_do_rep_exists()
-{
-	system("curl https://raw.githubusercontent.com/Nameuser01/pagroj/master/rep_check.sh > .rep_check.sh");
-	system("chmod +x .rep_check.sh");
-	system("dos2unix .rep_check.sh");
-	system("./.rep_check.sh");
-}
-
-// Trie des fichiers de sortie vers le répertoire approprié
-void sh_rep_cleaning()
-{
-	// system("mv -vi"); // virer tous les fichiers OUTIL dans le rep db
-}
-
-// Menu d'installation des requirements
+// menu d'installation des requirements
 void menu_installation()
 {
 	cout << "~~~~~~~~~~ Menu de sélection ~~~~~~~~~~\n" << endl;

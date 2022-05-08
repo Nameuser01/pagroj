@@ -1,14 +1,15 @@
 #!/usr/bin/env python3
 
-from collections import Counter
 from random import randint as rd
+from collections import Counter
 import matplotlib.pyplot as plt
 import numpy as np
+import sys
 
 # User variables
-random_range = 1000000
-min_range = 50
-max_range = 120
+min_range = int(sys.argv[1])
+max_range = int(sys.argv[2])
+random_range = int(sys.argv[3])
 
 # Process
 def random_generation(min, max, random_range):
