@@ -1,5 +1,6 @@
 #include <iostream>
 #include <string>
+// Programme prévu pour les systèmes linux exclusivement
 
 using namespace std;
 
@@ -29,7 +30,6 @@ int main()
 		menu();
 		cout << "Quel est votre choix ?\n> " ;
 		cin >> navigation ;
-		cout << "DEBEUG navigation value : " << navigation << endl;
 		cout << "\n" << endl;
 
 		// Fermer l'outil de gestion de OUTIL
@@ -42,11 +42,16 @@ int main()
 		else if (navigation == "1") 
 		{
 			system("clear");
+			bool poursuite(true);
 			string bit_installation("*");
-			while( bit_installation != "0"
-				|| bit_installation != "1"
-				|| bit_installation != "a")
+			while(poursuite == true)
 			{
+				// Choix utilisateur
+				menu_installation();
+				cout << "Que voulez vous faire ?\n> " ;
+				cin >> bit_installation ;
+				cout << "\n" << endl;
+
 				// fermer l'outil de gestion de OUTIL
 				if (bit_installation == "0")
 				{
@@ -56,12 +61,62 @@ int main()
 				// fermer ce menu d'installation
 				else if (bit_installation == "1")
 				{
-					break;
+					cout << "Retour au menu précédent !" << endl;
+					poursuite = false;
 				}
+				// installation de dos2unix
 				else if (bit_installation == "a")
 				{
+					string user_rep("*");
+					cout << "Êtes vous sûr de vouloir faire un <sudo apt install dos2unix> (O/n) ?\n> " ;
+					cin >> user_rep ;
+					if (user_rep == "Y" || user_rep == "y" || user_rep == "O" || user_rep == "o")
+					{
+						system("sudo apt install dos2unix");
+					}
+					else
+					{
+						cout << "Entrée incorrecte, dos2unix n'a pas été installé !" << endl;
+					}
+				}
+				//téléchargement du script rep_check.sh" << endl;
+				else if (bit_installation == "b")
+				{
+					string user_rep("*");
+					cout << "Êtes vous sûr de vouloir faire un <curl https://raw.githubusercontent.com/Nameuser01/pagroj/master/rep_check.sh> (O/n) ?\n> " ;
+					cin >> user_rep ;
+					if (user_rep == "Y" || user_rep == "y" || user_rep == "O" || user_rep == "o")
+					{
+						system("curl https://raw.githubusercontent.com/Nameuser01/pagroj/master/rep_check.sh > .rep_check.sh");
+					}
+					else
+					{
+						cout << "Entrée incorrecte, rep_check.sh n'a pas été téléchargé !" << endl;
+					}
 
 				}
+				//téléchargement du script loi_binomiale.py
+				else if (bit_installation == "c")
+				{
+					string user_rep("*");
+					cout << "Êtes vous sûr de vouloir faire un <curl https://raw.githubusercontent.com/Nameuser01/pagroj/master/loi_binomiale.py> (O/n) ?\n> " ;
+					cin >> user_rep ;
+					if (user_rep == "Y" || user_rep == "y" || user_rep == "O" || user_rep == "o")
+					{
+						system("curl https://raw.githubusercontent.com/Nameuser01/pagroj/master/loi_binomiale.py > .loi_binomiale.py");
+					}
+					else
+					{
+						cout << "Entrée incorrecte, loi_binomiale.py n'a pas été téléchargé !" << endl;
+					}
+
+				}
+				else
+				{
+					cout << "Entrée incorrecte, réessayez !" << endl;
+				}
+				cout << "\n" << endl;
+				pressEnter();
 			}
 		}
 		// visualisation des répertoires de OUTIL
@@ -113,11 +168,8 @@ int main()
 		else
 		{
 			cout << "Entrée incorrecte, réessayez !" << endl;
-		}
-		cout << "\nAppuyez sur entrée pour continuer..." << endl; 
+		} 
 		pressEnter();
-		system("clear");
-		cout << "DEBEUG FIN navigation value : " << navigation << endl;
 	}
 	cout << "Fin d'exécution du programme !" << endl;
 	return 0;
@@ -144,8 +196,10 @@ void menu()
 // Pause avant de poursuivre l'exécution
 void pressEnter()
 {
+	cout << "\nAppuyez sur entrée pour continuer..." << endl;
 	cin.get();
 	cin.get();
+	system("clear");
 }
 
 // Récupérer et exécuter un script de vérification de l'existence d'un fichier, sur github
