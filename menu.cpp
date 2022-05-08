@@ -30,7 +30,7 @@ int main()
 		cin >> navigation ;
 		cout << "\n" << endl;
 
-		// fermer l'outil de gestion de OUTIL
+		// fermer l'OUTIL de gestion de OUTIL
 		if (navigation == "0")
 		{
 			cout << "Fin d'exécution du programme !" << endl;
@@ -50,7 +50,7 @@ int main()
 				cin >> bit_installation ;
 				cout << "\n" << endl;
 
-				// quitter l'outil de gestion de OUTIL
+				// quitter l'OUTIL de gestion de OUTIL
 				if (bit_installation == "0")
 				{
 					cout << "Fin d'exécution du programme !" << endl;
@@ -148,9 +148,10 @@ int main()
 		// visualisation de la répartition du random en python
 		else if (navigation == "6")
 		{
-			int arg_min(0), arg_max(0), arg_tirages(0);
+			int arg_min(0), arg_max(0), arg_tirages(0), indicateur(0);
+			bool stayHere(true);
 			// choix des arguments pour .loi_binomiale.py
-			while(arg_max <= arg_min || arg_min <= 0 || arg_tirages <= 0)
+			while(stayHere == true)
 			{
 				// choix utilisateur
 				cout << "Quelle est la borne min pour la fenêtre de random à tester ?\n> " ;
@@ -159,20 +160,42 @@ int main()
 				cin >> arg_max ;
 				cout << "\nCombien de tirages sont a effectuer ?\n> " ;
 				cin >> arg_tirages ;
+				if (arg_max <= arg_min || arg_min <= 0 || arg_tirages <= 0)
+				{
+					cout << "Entrée incorrecte, réessayez !" << endl;
+				}
+				else
+				{
+					cout << "Lancement du script ..." << endl;
+					stayHere = false;
+				}
 			}
-			string commande("./.loi_binomiale.py " + to_string(arg_min) + " " + to_string(arg_max) + " " + to_string(arg_tirages));
+			string commande("./.loi_binomiale.py " + to_string(arg_min) + " " + to_string(arg_max) + " " + to_string(arg_tirages) + "&");
 			system((commande).c_str());
 		}
 		// réorganisation du répertoire OUTIL
 		else if (navigation == "a")
 		{
 			system("./.rep_check.sh");
-			system("mv -iv OUTIL_???????_????????_??????.txt db/");
+			system("mv -v OUTIL_???????_????????_??????.txt db/");
 		}
 		// analyse statistique d'un fichier (GUI)
 		else if (navigation == "b")
 		{
-			continue;
+			int choix_fichier(0), accuracy(0);
+			// choix utilisateur
+			system("ls db/OUTIL_treated_????????_??????.txt > .temp_file");
+			system("cat -n .temp_file");
+			cout << "\nSur quel fichier souhaitez vous travailler (n° de fichier) ?\n> " ;
+			cin >> choix_fichier ;
+			cout << "\nÀ combien d'occurences voulez vous limiter le résultat graphique ?\n> " ;
+			cin >> accuracy ;
+			cout << "\n" << endl;
+
+			// process
+			string commande("./.stat.py " + to_string(choix_fichier) + " " + to_string(accuracy) + "&");
+			cout << "Lancement en cours ..." << endl;
+			system((commande).c_str());
 		}
 		// analyse statistique d'un fichier (SHELL)
 		else if (navigation == "c")
