@@ -179,11 +179,33 @@ int main()
 			system("./.rep_check.sh");
 			system("mv -v OUTIL_???????_????????_??????.txt db/");
 		}
-		// analyse statistique d'un fichier (GUI)
+		// traiter les fichiers de sortie de OUTIL
 		else if (navigation == "b")
 		{
-			int choix_fichier(0), accuracy(0);
+			// présentation utilisateur
+			cout << "Fichiers bruts : \n" << endl;
+			system("ls db/OUTIL_results_????????_??????.txt > .temp_file");
+			system("cat -n .temp_file");
+			cout << "\n\nFichiers traités :\n" << endl;
+			system("ls db/OUTIL_treated_????????_??????.txt");
+
+			//choix utilisateur
+			int choix_fichier(0);
+			cout << "\n\nQuel fichier voulez vous traiter (n° de fichier) ?\n> " ;
+			cin >> choix_fichier ;
+			cout << "\n" << endl;
+
+			// process
+			string commande("./.traitement.py " + to_string(choix_fichier) + "&");
+			cout << "Lancement en cours ..." << endl;
+			system((commande).c_str());
+			cout << "\nTraitement effectué !\n\n" << endl;
+		}
+		// analyse statistique d'un fichier (GUI)
+		else if (navigation == "c")
+		{
 			// choix utilisateur
+			int choix_fichier(0), accuracy(0);
 			system("ls db/OUTIL_treated_????????_??????.txt > .temp_file");
 			system("cat -n .temp_file");
 			cout << "\nSur quel fichier souhaitez vous travailler (n° de fichier) ?\n> " ;
@@ -197,15 +219,21 @@ int main()
 			cout << "Lancement en cours ..." << endl;
 			system((commande).c_str());
 		}
-		// analyse statistique d'un fichier (SHELL)
-		else if (navigation == "c")
-		{
-			continue;
-		}
 		// exploration des résultats
 		else if (navigation == "d")
 		{
-			continue;
+			// affichage des propositions
+			cout << "Liste des fichiers disponibles :\n" << endl;
+			system("ls db/OUTIL_treated_????????_??????.txt > .temp_file");
+			system("cat -n .temp_file");
+
+			// choix utilisateur
+			int choix_fichier(0);
+			cout << "\n\nQuel fichier voulez vous explorer ?\n> " ;
+			cin >> choix_fichier ;
+			string commande("./.voyager.sh " + to_string(choix_fichier) + "&");
+			cout << "Lancement en cours ..." << endl;
+			system((commande).c_str());
 		}
 		else
 		{
@@ -230,8 +258,8 @@ void menu()
 	cout << "5 - visualisation des fichiers de sortis triés de OUTIL" << endl;
 	cout << "6 - visualisation de la répartition du random en python" << endl;
 	cout << "a + réorganisation du répertoire OUTIL" << endl;
-	cout << "b + analyse statistique d'un fichier (GUI)" << endl;
-	cout << "c + analyse statistique d'un fichier (SHELL)" << endl;
+	cout << "b + traiter les fichiers de sortie de OUTIL" << endl;
+	cout << "c + analyse statistique d'un fichier" << endl;
 	cout << "d + exploration des résultats" << endl;
 	cout << "\n" << endl;
 }
@@ -254,5 +282,7 @@ void menu_installation()
 	cout << "a + installation de dos2unix (pour le bon fonctionnement des scripts récupérés depuis github)" << endl;
 	cout << "b + téléchargement du script rep_check.sh" << endl;
 	cout << "c + téléchargement du script loi_binomiale.py" << endl;
+	cout << "d + téléchargement du script traitement.py" << endl;
+	cout <<" e + téléchargement du script !!!!!!!!!!!.sh" << endl;
 	cout << "\n" << endl;
 }
