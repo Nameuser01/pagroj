@@ -13,7 +13,7 @@ int main()
 	string navigation("*");
 
 	system("clear");
-	while( navigation != "0"
+	while ( navigation != "0"
 		|| navigation != "1"
 		|| navigation != "2"
 		|| navigation != "3"
@@ -59,7 +59,7 @@ int main()
 				// fermer ce menu d'installation
 				else if (bit_installation == "1")
 				{
-					cout << "Retour au menu précédent !" << endl;
+					system("clear");
 					poursuite = false;
 				}
 				// installation de dos2unix
@@ -113,13 +113,74 @@ int main()
 					}
 
 				}
+				// téléchargement du script traitement.py
+				else if (bit_installation == "d")
+				{
+					string user_rep("*");
+					cout << "Êtes vous sûr de vouloir faire un <curl https://raw.githubusercontent.com/Nameuser01/pagroj/master/traitement.py> (O/n) ?\n> " ;
+					cin >> user_rep ;
+					if (user_rep == "Y" || user_rep == "y" || user_rep == "O" || user_rep == "o")
+					{
+						system("curl https://raw.githubusercontent.com/Nameuser01/pagroj/master/traitement.py > .traitement.py");
+						system("dos2unix .traitement.py");
+						system("chmod +x .traitement.py");
+					}
+					else
+					{
+						cout << "Entrée incorrecte, traitement.py n'a pas été téléchargé !" << endl;
+					}
+
+				}
+				// téléchargement du script stat.py
+				else if (bit_installation == "e")
+				{
+					string user_rep("*");
+					cout << "Êtes vous sûr de vouloir faire un <curl https://raw.githubusercontent.com/Nameuser01/pagroj/master/stat.py> (O/n) ?\n> " ;
+					cin >> user_rep ;
+					if (user_rep == "Y" || user_rep == "y" || user_rep == "O" || user_rep == "o")
+					{
+						system("curl https://raw.githubusercontent.com/Nameuser01/pagroj/master/stat.py > .stat.py");
+						system("dos2unix .stat.py");
+						system("chmod +x .stat.py");
+					}
+					else
+					{
+						cout << "Entrée incorrecte, stat.py n'a pas été téléchargé !" << endl;
+					}
+
+				}
+				// téléchargement du script voyager.sh
+				else if (bit_installation == "f")
+				{
+					string user_rep("*");
+					cout << "Êtes vous sûr de vouloir faire un <curl https://raw.githubusercontent.com/Nameuser01/pagroj/master/voyager.sh> (O/n) ?\n> " ;
+					cin >> user_rep ;
+					if (user_rep == "Y" || user_rep == "y" || user_rep == "O" || user_rep == "o")
+					{
+						system("curl https://raw.githubusercontent.com/Nameuser01/pagroj/master/voyager.sh > .voyager.sh");
+						system("dos2unix .voyager.sh");
+						system("chmod +x .voyager.sh");
+					}
+					else
+					{
+						cout << "Entrée incorrecte, voyager.sh n'a pas été téléchargé !" << endl;
+					}
+
+				}
 				else
 				{
 					cout << "Entrée incorrecte, réessayez !" << endl;
 				}
-				cout << "\n" << endl;
-				// !! filtrage du press enter !!
-				pressEnter();
+				// filtrage de l'affichage de pressEnter 
+				if (bit_installation == "1")
+				{
+					// Quitter silencieusement
+				}
+				else
+				{
+					cout << "\n" << endl;
+					pressEnter();
+				}
 			}
 		}
 		// visualisation des répertoires de OUTIL
@@ -187,7 +248,7 @@ int main()
 			system("ls db/OUTIL_results_????????_??????.txt > .temp_file");
 			system("cat -n .temp_file");
 			cout << "\n\nFichiers traités :\n" << endl;
-			system("ls db/OUTIL_treated_????????_??????.txt");
+			system("ls -l db/OUTIL_treated_????????_??????.txt");
 
 			//choix utilisateur
 			int choix_fichier(0);
@@ -239,8 +300,15 @@ int main()
 		{
 			cout << "Entrée incorrecte, réessayez !" << endl;
 		}
-		// !! filtrage du press enter !!
-		pressEnter();
+		// filtrage de l'affichage de pressEnter
+		if ( navigation == "1")
+		{
+			// Quitter silencieusement
+		}
+		else
+		{
+			pressEnter();
+		}
 	}
 	cout << "Fin d'exécution du programme !" << endl;
 	return 0;
@@ -249,13 +317,13 @@ int main()
 // afficher le menu de sélection pour l'utilisateur
 void menu()
 {
-	cout << "########## Menu de sélection ##########\n" << endl;
+	cout << "########## Menu principal ##########\n" << endl;
 	cout << "0 - fermer le programme" << endl;
 	cout << "1 - installation requirements pour ce programme" << endl;
 	cout << "2 - visualisation des répertoires de OUTIL" << endl;
 	cout << "3 - visualisation du répertoire de sortie de OUTIL" << endl;
 	cout << "4 - visualisation des fichiers de sortie bruts de OUTIL" << endl;
-	cout << "5 - visualisation des fichiers de sortis triés de OUTIL" << endl;
+	cout << "5 - visualisation des fichiers de sortie triés de OUTIL" << endl;
 	cout << "6 - visualisation de la répartition du random en python" << endl;
 	cout << "a + réorganisation du répertoire OUTIL" << endl;
 	cout << "b + traiter les fichiers de sortie de OUTIL" << endl;
@@ -276,13 +344,14 @@ void pressEnter()
 // menu d'installation des requirements
 void menu_installation()
 {
-	cout << "~~~~~~~~~~ Menu de sélection ~~~~~~~~~~\n" << endl;
+	cout << "~~~~~~~~~~ Menu d'installation ~~~~~~~~~~\n" << endl;
 	cout << "0 - fermer le programme" << endl;
 	cout << "1 - quitter ce menu d'installation" << endl;
 	cout << "a + installation de dos2unix (pour le bon fonctionnement des scripts récupérés depuis github)" << endl;
 	cout << "b + téléchargement du script rep_check.sh" << endl;
 	cout << "c + téléchargement du script loi_binomiale.py" << endl;
 	cout << "d + téléchargement du script traitement.py" << endl;
-	cout <<" e + téléchargement du script !!!!!!!!!!!.sh" << endl;
+	cout << "e + téléchargement du script stat.py" << endl;
+	cout << "f + téléchargement du script voyager.sh" << endl;
 	cout << "\n" << endl;
 }
